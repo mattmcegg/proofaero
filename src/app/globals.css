@@ -1,26 +1,171 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Signature aviation-stripe palette (sampled from the AV mark) */
+  --color-flag-crimson: #9e2a2f;
+  --color-flag-red: #e0432e;
+  --color-flag-orange: #f47c20;
+  --color-flag-gold: #f6b72a;
+
+  /* The logo blue */
+  --color-aero: #0e8fd6;
+  --color-aero-bright: #29a9ef;
+  --color-aero-deep: #0a5f93;
+
+  /* Premium neutrals */
+  --color-ink: #0a1626;
+  --color-ink-soft: #16263b;
+  --color-paper: #fbfaf7;
+  --color-paper-dim: #f1efe9;
+  --color-mist: #6b7a8d;
+
+  --font-display: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-lift: 0 24px 60px -20px rgba(10, 22, 38, 0.28);
+  --shadow-soft: 0 12px 40px -16px rgba(10, 22, 38, 0.18);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+  ::selection {
+    background: var(--color-aero);
+    color: white;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  /* The recurring four-band aviation stripe — the brand's connective tissue */
+  .stripe-bar {
+    background: linear-gradient(
+      90deg,
+      var(--color-flag-crimson) 0%,
+      var(--color-flag-crimson) 25%,
+      var(--color-flag-red) 25%,
+      var(--color-flag-red) 50%,
+      var(--color-flag-orange) 50%,
+      var(--color-flag-orange) 75%,
+      var(--color-flag-gold) 75%,
+      var(--color-flag-gold) 100%
+    );
+  }
+
+  .flag-dot {
+    display: inline-block;
+    height: 0.6rem;
+    width: 0.6rem;
+    border-radius: 9999px;
+    background: linear-gradient(
+      135deg,
+      var(--color-flag-crimson),
+      var(--color-flag-red),
+      var(--color-flag-orange),
+      var(--color-flag-gold)
+    );
+    box-shadow: 0 0 0 0 rgba(246, 183, 42, 0.5);
+    animation: dot-pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes dot-pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(246, 183, 42, 0.45);
+    }
+    50% {
+      box-shadow: 0 0 0 6px rgba(246, 183, 42, 0);
+    }
+  }
+
+  .stripe-text {
+    background: linear-gradient(
+      105deg,
+      var(--color-flag-crimson),
+      var(--color-flag-red) 35%,
+      var(--color-flag-orange) 65%,
+      var(--color-flag-gold)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .grid-faint {
+    background-image: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0.04) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    animation: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .reveal-1 {
+    animation-delay: 0.08s;
+  }
+  .reveal-2 {
+    animation-delay: 0.16s;
+  }
+  .reveal-3 {
+    animation-delay: 0.24s;
+  }
+  .reveal-4 {
+    animation-delay: 0.32s;
+  }
+
+  @keyframes reveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes drift {
+    0%,
+    100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-14px) rotate(1.5deg);
+    }
+  }
+  .animate-drift {
+    animation: drift 7s ease-in-out infinite;
+  }
+
+  @keyframes sweep {
+    from {
+      transform: translateX(-120%);
+    }
+    to {
+      transform: translateX(220%);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .animate-drift {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
 }
