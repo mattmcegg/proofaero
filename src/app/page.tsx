@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import HeroVisual from "@/components/HeroVisual";
 import Faq from "@/components/Faq";
 import QuoteForm from "@/components/QuoteForm";
-import { Mark, Wordmark, StripeFlag, StripeRule } from "@/components/brand";
+import { Mark, LogoImage, StripeFlag, StripeRule } from "@/components/brand";
 import {
   ArrowIcon,
   ShieldIcon,
@@ -766,7 +766,7 @@ function Footer() {
       <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8">
         <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
-            <Wordmark className="text-xl" light />
+            <LogoImage className="h-16 w-16 rounded-xl" />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-paper/60">
               Drone surveys that turn your property into proof — protecting
               homeowners from denied and underpaid storm claims, one flight at a

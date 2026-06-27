@@ -1,4 +1,29 @@
 import type { SVGProps } from "react";
+import Image from "next/image";
+
+/**
+ * The official ProofAero logo lockup (PA monogram + drone + aviation stripes
+ * + ProofAero wordmark). The artwork carries its own dark navy field, so it
+ * is designed to sit on the site's dark surfaces.
+ */
+export function LogoImage({
+  className = "",
+  priority = false,
+}: {
+  className?: string;
+  priority?: boolean;
+}) {
+  return (
+    <Image
+      src="/proofaero-logo.png"
+      alt="ProofAero"
+      width={1024}
+      height={1024}
+      priority={priority}
+      className={className}
+    />
+  );
+}
 
 /**
  * ProofAero mark — a protective peak that doubles as a roofline and an

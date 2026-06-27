@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Wordmark } from "./brand";
+import { LogoImage } from "./brand";
 
 const links = [
   { href: "#problem", label: "Why It Matters" },
@@ -27,13 +27,13 @@ export default function Navbar() {
       <div
         className={`transition-all duration-300 ${
           scrolled
-            ? "border-b border-ink/10 bg-paper/85 backdrop-blur-xl"
+            ? "border-b border-white/10 bg-ink/80 backdrop-blur-xl"
             : "border-b border-transparent bg-transparent"
         }`}
       >
-        <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8">
-          <a href="#top" aria-label="ProofAero home">
-            <Wordmark className="text-lg" light={!scrolled} />
+        <nav className="mx-auto flex h-18 max-w-7xl items-center justify-between px-5 sm:px-8">
+          <a href="#top" aria-label="ProofAero home" className="flex items-center">
+            <LogoImage className="h-12 w-12 rounded-xl sm:h-13 sm:w-13" priority />
           </a>
 
           <div className="hidden items-center gap-8 lg:flex">
@@ -41,11 +41,7 @@ export default function Navbar() {
               <a
                 key={l.href}
                 href={l.href}
-                className={`text-sm font-medium transition-colors ${
-                  scrolled
-                    ? "text-ink/70 hover:text-ink"
-                    : "text-paper/80 hover:text-paper"
-                }`}
+                className="text-sm font-medium text-paper/80 transition-colors hover:text-paper"
               >
                 {l.label}
               </a>
@@ -55,7 +51,7 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
             <a
               href="#quote"
-              className="hidden rounded-full bg-aero px-5 py-2.5 text-sm font-semibold text-white shadow-soft transition-all hover:bg-aero-deep hover:shadow-lift sm:inline-block"
+              className="hidden rounded-full bg-aero px-5 py-2.5 text-sm font-semibold text-white shadow-soft transition-all hover:bg-aero-bright hover:shadow-lift sm:inline-block"
             >
               Get my proof quote
             </a>
@@ -63,9 +59,7 @@ export default function Navbar() {
               type="button"
               aria-label="Toggle menu"
               onClick={() => setOpen((v) => !v)}
-              className={`flex h-10 w-10 items-center justify-center rounded-full lg:hidden ${
-                scrolled ? "text-ink" : "text-paper"
-              }`}
+              className="flex h-10 w-10 items-center justify-center rounded-full text-paper lg:hidden"
             >
               <div className="flex flex-col gap-1.5">
                 <span
@@ -91,8 +85,8 @@ export default function Navbar() {
 
       {/* Mobile sheet */}
       <div
-        className={`overflow-hidden bg-paper/95 backdrop-blur-xl transition-all duration-300 lg:hidden ${
-          open ? "max-h-96 border-b border-ink/10" : "max-h-0"
+        className={`overflow-hidden bg-ink/95 backdrop-blur-xl transition-all duration-300 lg:hidden ${
+          open ? "max-h-96 border-b border-white/10" : "max-h-0"
         }`}
       >
         <div className="flex flex-col px-5 py-3">
@@ -101,7 +95,7 @@ export default function Navbar() {
               key={l.href}
               href={l.href}
               onClick={() => setOpen(false)}
-              className="border-b border-ink/5 py-3 text-base font-medium text-ink/80"
+              className="border-b border-white/5 py-3 text-base font-medium text-paper/80"
             >
               {l.label}
             </a>
