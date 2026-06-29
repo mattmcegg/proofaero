@@ -44,3 +44,14 @@ export interface SessionPayload {
   username: string;
   role: UserRole;
 }
+
+export type QuoteRequestType = "baseline" | "ondemand" | "both";
+
+export interface QuoteRequest {
+  _id: ObjectId;
+  name: string;
+  email: string;
+  zip: string;
+  type: QuoteRequestType;
+  createdAt: Date;
+}

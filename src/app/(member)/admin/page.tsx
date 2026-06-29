@@ -23,21 +23,50 @@ interface Survey {
   createdAt: string;
 }
 
+interface QuoteRequest {
+  id: string;
+  name: string;
+  email: string;
+  zip: string;
+  type: string;
+  createdAt: string;
+}
+
+const quoteTypeLabels: Record<string, string> = {
+  baseline: "Pre-storm baseline",
+  ondemand: "On-demand storm response",
+  both: "Both — full protection",
+};
+
+function formatDate(iso: string) {
+  return new Date(iso).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+}
+
 export default function AdminPage() {
   const [users, setUsers] = useState<User[]>([]);
   const [surveys, setSurveys] = useState<Survey[]>([]);
+  const [quotes, setQuotes] = useState<QuoteRequest[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function load() {
-      const [usersRes, surveysRes] = await Promise.all([
+      const [usersRes, surveysRes, quotesRes] = await Promise.all([
         fetch("/api/admin/users"),
         fetch("/api/surveys"),
+        fetch("/api/admin/quotes"),
       ]);
       const usersData = await usersRes.json();
       const surveysData = await surveysRes.json();
+      const quotesData = await quotesRes.json();
       if (usersRes.ok) setUsers(usersData.users);
       if (surveysRes.ok) setSurveys(surveysData.surveys);
+      if (quotesRes.ok) setQuotes(quotesData.quotes);
       setLoading(false);
     }
     load();
@@ -51,7 +80,7 @@ export default function AdminPage() {
         <div>
           <h1 className="font-display text-3xl font-bold text-ink">Admin</h1>
           <p className="mt-2 text-mist">
-            Manage members, surveys, and vault footage uploads.
+            Manage quote requests, members, surveys, and vault footage uploads.
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
@@ -69,6 +98,49 @@ export default function AdminPage() {
           </Link>
         </div>
       </div>
+
+      <section className="mt-12">
+        <h2 className="font-display text-xl font-bold text-ink">Quote requests</h2>
+        {loading ? (
+          <p className="mt-4 text-mist">Loading…</p>
+        ) : quotes.length === 0 ? (
+          <p className="mt-4 text-mist">No quote requests yet.</p>
+        ) : (
+          <div className="mt-6 overflow-hidden rounded-2xl border border-ink/10 bg-white shadow-soft">
+            <table className="w-full text-left text-sm">
+              <thead className="border-b border-ink/10 bg-paper-dim/50 text-xs font-semibold uppercase tracking-wider text-mist">
+                <tr>
+                  <th className="px-5 py-3">Submitted</th>
+                  <th className="px-5 py-3">Name</th>
+                  <th className="px-5 py-3">Email</th>
+                  <th className="px-5 py-3">ZIP</th>
+                  <th className="px-5 py-3">Survey type</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-ink/5">
+                {quotes.map((q) => (
+                  <tr key={q.id} className="hover:bg-paper-dim/30">
+                    <td className="px-5 py-4 text-mist">{formatDate(q.createdAt)}</td>
+                    <td className="px-5 py-4 font-semibold text-ink">{q.name}</td>
+                    <td className="px-5 py-4">
+                      <a
+                        href={`mailto:${q.email}`}
+                        className="text-aero hover:text-aero-bright"
+                      >
+                        {q.email}
+                      </a>
+                    </td>
+                    <td className="px-5 py-4 text-mist">{q.zip}</td>
+                    <td className="px-5 py-4 text-mist">
+                      {quoteTypeLabels[q.type] ?? q.type}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
 
       <section className="mt-12">
         <h2 className="font-display text-xl font-bold text-ink">All surveys</h2>

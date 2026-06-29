@@ -1,10 +1,45 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { ArrowIcon, CheckIcon } from "./icons";
 
 export default function QuoteForm() {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+
+    try {
+      const res = await fetch("/api/quotes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: data.get("name"),
+          email: data.get("email"),
+          zip: data.get("zip"),
+          type: data.get("type"),
+        }),
+      });
+
+      if (!res.ok) {
+        const payload = await res.json().catch(() => null);
+        throw new Error(payload?.error ?? "Something went wrong. Please try again.");
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   if (submitted) {
     return (
@@ -25,13 +60,7 @@ export default function QuoteForm() {
   }
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        setSubmitted(true);
-      }}
-      className="grid gap-4"
-    >
+    <form onSubmit={handleSubmit} className="grid gap-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Full name" name="name" placeholder="Jordan Rivera" />
         <Field
@@ -68,12 +97,20 @@ export default function QuoteForm() {
           </select>
         </div>
       </div>
+      {error ? (
+        <p className="rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+          {error}
+        </p>
+      ) : null}
       <button
         type="submit"
-        className="group mt-1 inline-flex h-13 items-center justify-center gap-2 rounded-xl bg-flag-gold px-6 py-3.5 text-base font-semibold text-ink transition-all hover:brightness-105"
+        disabled={loading}
+        className="group mt-1 inline-flex h-13 items-center justify-center gap-2 rounded-xl bg-flag-gold px-6 py-3.5 text-base font-semibold text-ink transition-all hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        Lock in my survey
-        <ArrowIcon className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+        {loading ? "Submitting…" : "Lock in my survey"}
+        {!loading ? (
+          <ArrowIcon className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+        ) : null}
       </button>
       <p className="text-center text-xs text-paper/50">
         Free quote · No obligation · We never share your address.
