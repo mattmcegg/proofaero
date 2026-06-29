@@ -54,7 +54,7 @@ function Hero() {
           </span>
 
           <h1 className="reveal reveal-1 mt-6 font-display text-4xl font-bold leading-[1.05] sm:text-5xl lg:text-6xl">
-            When the storm damanages it,
+            When the storm damages it,
             <br />
             your <span className="stripe-text">drone footage</span> proves it.
           </h1>
@@ -781,23 +781,28 @@ function Footer() {
           <FooterCol
             title="Surveys"
             links={[
-              "Pre-storm baseline",
-              "On-demand response",
-              "Annual protection plan",
-              "Commercial properties",
+              { label: "Pre-storm baseline", href: "#process" },
+              { label: "On-demand response", href: "#process" },
+              { label: "Annual protection plan", href: "#quote" },
+              { label: "Commercial properties", href: "#quote" },
             ]}
           />
           <FooterCol
             title="Company"
-            links={["How it works", "Our pilots", "Coverage areas", "Contact"]}
+            links={[
+              { label: "How it works", href: "#process" },
+              { label: "Our pilots", href: "#proof" },
+              { label: "Coverage areas", href: "#coverage" },
+              { label: "Contact", href: "#quote" },
+            ]}
           />
           <FooterCol
             title="Resources"
             links={[
-              "Claim documentation guide",
-              "Hurricane prep checklist",
-              "FAQ",
-              "Member login",
+              { label: "Claim documentation guide", href: "#faq" },
+              { label: "Hurricane prep checklist", href: "#faq" },
+              { label: "FAQ", href: "#faq" },
+              { label: "Member login", href: "/login" },
             ]}
           />
         </div>
@@ -824,7 +829,13 @@ function Footer() {
   );
 }
 
-function FooterCol({ title, links }: { title: string; links: string[] }) {
+function FooterCol({
+  title,
+  links,
+}: {
+  title: string;
+  links: { label: string; href: string }[];
+}) {
   return (
     <div>
       <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-paper/90">
@@ -832,12 +843,12 @@ function FooterCol({ title, links }: { title: string; links: string[] }) {
       </h4>
       <ul className="mt-4 space-y-3">
         {links.map((l) => (
-          <li key={l}>
+          <li key={l.label}>
             <a
-              href="#"
+              href={l.href}
               className="text-sm text-paper/60 transition-colors hover:text-aero-bright"
             >
-              {l}
+              {l.label}
             </a>
           </li>
         ))}

@@ -32,6 +32,10 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
+
+# uploaded vault footage (not in git)
+/uploads
 
 # vercel
 .vercel

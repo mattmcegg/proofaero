@@ -26,9 +26,9 @@ export function LogoImage({
 }
 
 /**
- * ProofAero mark — a protective peak that doubles as a roofline and an
- * ascending flight path. Its interior carries the four aviation stripes,
- * echoing the striped pyramid of the reference monogram.
+ * ProofAero mark — the "PA" monogram in aero blue paired with the four-band
+ * aviation stripe flag, distilled from the full logo lockup for use at small
+ * sizes (footer, inline accents).
  */
 export function Mark({
   className,
@@ -42,28 +42,23 @@ export function Mark({
       aria-hidden="true"
       {...props}
     >
-      <defs>
-        <clipPath id="pa-peak">
-          <path d="M32 5 60 56 4 56Z" />
-        </clipPath>
-      </defs>
-      {/* Stripe bands fill the lower body of the peak */}
-      <g clipPath="url(#pa-peak)">
-        <rect x="0" y="5" width="64" height="51" fill="var(--color-aero)" />
-        <rect x="0" y="40" width="64" height="4" fill="var(--color-flag-crimson)" />
-        <rect x="0" y="44" width="64" height="4" fill="var(--color-flag-red)" />
-        <rect x="0" y="48" width="64" height="4" fill="var(--color-flag-orange)" />
-        <rect x="0" y="52" width="64" height="4" fill="var(--color-flag-gold)" />
-      </g>
-      {/* Crisp outline keeps it sharp at small sizes */}
-      <path
-        d="M32 5 60 56 4 56Z"
-        stroke="var(--color-aero-deep)"
-        strokeWidth="2.5"
-        strokeLinejoin="round"
-      />
-      {/* Inner notch — the drone's vantage point at the apex */}
-      <circle cx="32" cy="20" r="3.4" fill="var(--color-paper)" />
+      {/* PA monogram */}
+      <text
+        x="2"
+        y="45"
+        className="font-display"
+        fontSize="34"
+        fontWeight="700"
+        letterSpacing="-2"
+        fill="var(--color-aero)"
+      >
+        PA
+      </text>
+      {/* Aviation stripe flag */}
+      <rect x="44" y="21" width="18" height="6" fill="var(--color-flag-crimson)" />
+      <rect x="44" y="27" width="18" height="6" fill="var(--color-flag-red)" />
+      <rect x="44" y="33" width="18" height="6" fill="var(--color-flag-orange)" />
+      <rect x="44" y="39" width="18" height="6" fill="var(--color-flag-gold)" />
     </svg>
   );
 }
